@@ -6,32 +6,38 @@ import { Link } from "react-router-dom";
 
 
 function Homepage() {
-    const [articles, setArticles] = useState([]);
+  const [articles, setArticles] = useState([]);
+  const [isLoading, setIsLoading] = useState(true)
     useEffect(() => {
       fetchArticles().then((articlesFromApi) => {
-      setArticles(articlesFromApi);
+      setArticles(articlesFromApi)
+       setIsLoading(false)
     });
     }, []);
-  
-  return articles.length ? (
+
+    if (isLoading) {
+    return <div>Is Loading....</div>;
+  }
+  return (
    
-    <div>
-    {
-      articles.map((article, index) => (
-        
-        <Link to={`/article/${article.article_id}`}>
-          <p>{article.title}</p>
-          <p>{article.author}</p>
-          <p>{article.created_at}</p>
-          <p>{article.topic}</p>
-          <p>{article.comment_count}</p>
-          <p>{article.votes}</p>
-         </Link>
-      ))}
-  </div>
-   ) :  
-  null;
-}
+    <div className="homepage_wrapper">
+      {
+        articles.map((article, index) => (
+        <div key={index} className="article_card" >
+          <Link to={`/article/${article.article_id}`}>
+          
+            <p>{article.title}</p>
+            <p>{article.author}</p>
+            <p>{article.created_at}</p>
+            <p>{article.topic}</p>
+            <p>{article.comment_count}</p>
+            <p>{article.votes}</p>
+          </Link>
+             </div>
+        ))}
+    </div>
+  );
+};
 
 export default Homepage;
 
