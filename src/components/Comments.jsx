@@ -1,28 +1,27 @@
 import React, { useEffect, useState } from "react";
-import {fetchArticleComments } from '../ApiRequests';
-
+import { fetchArticleComments } from "../ApiRequests";
 
 function Comments({ article_id }) {
-    const [isCommentsVisible, setCommentsVisible] = useState(false);
-    const [comments, setComments] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+  const [isCommentsVisible, setCommentsVisible] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-      fetchArticleComments(article_id).then((commentsFromApi) => {
-          setComments(commentsFromApi);
-          setIsLoading(false);
-      });
-    }, []);
+  useEffect(() => {
+    fetchArticleComments(article_id).then((commentsFromApi) => {
+      setComments(commentsFromApi);
+      setIsLoading(false);
+    });
+  }, []);
 
-     if (isLoading) {
-       return <div> Loading....</div>;
-     }
+  if (isLoading) {
+    return <div> Loading....</div>;
+  }
   return (
     <div>
-    <button onClick={() => setCommentsVisible(!isCommentsVisible)}>
+      <button onClick={() => setCommentsVisible(!isCommentsVisible)}>
         <p>View all Comments</p>
       </button>
-       {isCommentsVisible ? (
+      {isCommentsVisible ? (
         <div>
           All comments
           {comments.map((comment, index) => (
@@ -35,13 +34,8 @@ function Comments({ article_id }) {
           ))}
         </div>
       ) : null}
-      
-        
- 
     </div>
   );
 }
 
 export default Comments;
-
-
