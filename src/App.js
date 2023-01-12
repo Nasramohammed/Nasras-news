@@ -1,9 +1,15 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Header from "./components/Header";
-import Navbar from "./components/Navbar";
-import Homepage from "./components/HomePage";
-import ArticlePage from "./components/ArticlePage";
+
+
+import {
+  Header,
+  UsersPage,
+  TopicsPage,
+  Navbar,
+  HomePage,
+  ArticlePage
+} from './components/index';
 
 
 
@@ -13,10 +19,12 @@ function App() {
       <div className="App">
         <Header />
         <Navbar />
-         <Routes>
-          <Route path="/" element={<Homepage />} />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
           <Route path="/article/:article_id" element={<ArticlePage />} />
-        </Routes> 
+          <Route path="/topics" element={<TopicsPage />} />
+           <Route path="/users" element={<UsersPage />} />
+        </Routes>
       </div>
     </BrowserRouter>
   );

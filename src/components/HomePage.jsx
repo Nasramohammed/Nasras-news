@@ -5,7 +5,7 @@ import './HomePage.css';
 import { Link } from "react-router-dom";
 
 
-function Homepage() {
+function HomePage() {
   const [articles, setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(true)
     useEffect(() => {
@@ -16,7 +16,7 @@ function Homepage() {
     }, []);
 
     if (isLoading) {
-    return <div>Is Loading....</div>;
+    return <div> Loading....</div>;
   }
   return (
    
@@ -39,7 +39,7 @@ function Homepage() {
   );
 };
 
-export default Homepage;
+export default HomePage;
 
 
 

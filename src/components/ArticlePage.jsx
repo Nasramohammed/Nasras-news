@@ -1,16 +1,15 @@
-import React from 'react';
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { fetchSingleArticle,fetchArticleComments } from '../ApiRequests';
+
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { fetchSingleArticle } from '../ApiRequests';
 import './ArticlePage.css';
+import Comments  from './Comments';
 
 // complete is error state 
 
 function ArticlePage() {
   const { article_id } = useParams(); 
- const [isCommentsVisible, setCommentsVisible] = useState(false)
   const [article, setArticle] = useState({})
-  const [comments, setComments] = useState([])
   const [isLoading, setIsLoading] = useState(true)
  
   
@@ -22,41 +21,22 @@ function ArticlePage() {
       });
     }, []);
   
-  useEffect(() => {
-    fetchArticleComments(article_id)
-      .then((commentsFromApi) => {
-     setComments(commentsFromApi);
-   
-   });
-  }, []);
+
   
   if (isLoading) {
-    return <div>Is Loading....</div>;
+    return <div> Loading....</div>;
   }
   
   return (
     <div>
-      <p>{article.title}</p>
-      <p>{article.author}</p>
-      <p>{article.created_at}</p>
-      <p>{article.topic}</p>
-      <p>{article.votes}</p>
-      <button onClick={() => setCommentsVisible(!isCommentsVisible)}>
-        <p>{article.comment_count} comments </p>
-      </button>
-      {isCommentsVisible ? (
-        <div>
-          All comments
-          {comments.map((comment, index) => (
-            <div>
-              <p>{comment.author}</p>
-              <p>{comment.created_at}</p>
-              <p>{comment.votes}</p>
-              <p>{comment.body}</p>
-            </div>
-          ))}
-        </div>
-      ) : null}
+      <p>title: {article.title}</p>
+      <p>author: {article.author}</p>
+      <p>body: {article.body }</p>
+      <p>date created at: {article.created_at}</p>
+      <p>topic: {article.topic}</p>
+      <p>votes: {article.votes}</p>
+      
+      <Comments article_id={article_id} />
     </div>
   );
 };
