@@ -1,64 +1,49 @@
-import React from 'react';
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchSingleArticle,fetchArticleComments } from '../ApiRequests';
-import './ArticlePage.css';
-
-// complete is error state 
+import { fetchSingleArticle, updateArticleVote } from "../ApiRequests";
+import "./ArticlePage.css";
+import { Comments, Votes } from "./index";
+// todo - complete is error state
 
 function ArticlePage() {
-  const { article_id } = useParams(); 
- const [isCommentsVisible, setCommentsVisible] = useState(false)
-  const [article, setArticle] = useState({})
-  const [comments, setComments] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
- 
-  
-    useEffect(() => {
-      fetchSingleArticle(article_id)
-        .then((articleFromApi) => {
-        setArticle(articleFromApi)
-        setIsLoading(false)
-      });
-    }, []);
-  
+  const { article_id } = useParams();
+  const [article, setArticle] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
-    fetchArticleComments(article_id)
-      .then((commentsFromApi) => {
-     setComments(commentsFromApi);
-   
-   });
+    fetchSingleArticle(article_id).then((articleFromApi) => {
+      setArticle(articleFromApi);
+      setIsLoading(false);
+    });
   }, []);
-  
+
+  const handleVote = (articleId, vote) => {
+    updateArticleVote(articleId, vote).then((updatedArticleFromApi) => {
+      setArticle(updatedArticleFromApi);
+    });
+  };
+
   if (isLoading) {
-    return <div>Is Loading....</div>;
+    return <div> Loading....</div>;
   }
-  
+
   return (
     <div>
-      <p>{article.title}</p>
-      <p>{article.author}</p>
-      <p>{article.created_at}</p>
-      <p>{article.topic}</p>
-      <p>{article.votes}</p>
-      <button onClick={() => setCommentsVisible(!isCommentsVisible)}>
-        <p>{article.comment_count} comments </p>
-      </button>
-      {isCommentsVisible ? (
-        <div>
-          All comments
-          {comments.map((comment, index) => (
-            <div>
-              <p>{comment.author}</p>
-              <p>{comment.created_at}</p>
-              <p>{comment.votes}</p>
-              <p>{comment.body}</p>
-            </div>
-          ))}
-        </div>
-      ) : null}
+      <p>title: {article.title}</p>
+      <p>author: {article.author}</p>
+      <p>body: {article.body}</p>
+      <p>date created at: {article.created_at}</p>
+      <p>topic: {article.topic}</p>
+
+      <Votes
+        votes={article.votes}
+        article_id={article_id}
+        handleVote={handleVote}
+      />
+
+      <Comments article_id={article_id} />
     </div>
   );
-};
+}
 
-export default ArticlePage ;
+export default ArticlePage;
